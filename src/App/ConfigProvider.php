@@ -10,6 +10,7 @@ namespace App;
 
 use App\Action\SomeShitInATemplateAction;
 use App\Action\SomeShitInATemplateFactory;
+use Jralph\Twig\Markdown\Extension;
 
 /**
  * Returns the templates configuration
@@ -30,7 +31,8 @@ class ConfigProvider
     {
         return [
             'dependencies' => $this->getDependencies(),
-            'templates' => $this->getTemplates()
+            'templates' => $this->getTemplates(),
+            'twig' => $this->getTwig()
         ];
     }
 
@@ -59,6 +61,19 @@ class ConfigProvider
             'paths' => [
                 'app'    => ['templates/app'],
             ]
+        ];
+    }
+
+    /**
+     * @see https://zendframework.github.io/zend-expressive/features/template/twig/#configuration
+     * @return array
+     */
+    public function getTwig()
+    {
+        return [
+            'extensions' => [new \Jralph\Twig\Markdown\Extension(
+                new \Jralph\Twig\Markdown\Parsedown\ParsedownExtraMarkdown()
+            )]
         ];
     }
 }
